@@ -1,0 +1,65 @@
+{% extends "layouts/base1.html" %}
+
+{% block title %} Homepage {% endblock title %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+    img {
+        border-radius: 7px;
+    }
+
+    .zoom {
+    transition: transform 0.2s;
+  }
+  .zoom:hover {
+    transform: scale(1.1); 
+    }
+</style>
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="page-inner">
+        <div class="container-fluid mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="page-title">Welcome {{request.user.username}}</h1>
+                    
+                </div>
+                <div class="row">
+                    <h3 >Your Uploaded Prescriptions</h3>
+                    {% if request.user.xrays_set %}
+                    
+                    {% for xray in request.user.xrays_set.all %}
+                    <div class="col-md-4">
+                        <div class="card text-center m-3 p-3 zoom" style="border-radius: 1em;">
+                            <div class="card-img">
+                                <img src="{{xray.image.url}}" width="100%">
+                            </div>
+                            <div class="card-text">
+                                <a href="/singleViewXray/{{xray.id}}/"><button class="btn btn-primary m-3">View</button></a>
+                                <span>
+                                    <a href="/deleteXray/{{xray.id}}/">
+                                      <button class="btn btn-danger">Delete</button>
+                                    </a>
+                                  </span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                        <!-- <h3>You have not uploaded prescriptions</h3> -->
+                        <p>Start uploading your prescriptions <a href="/uploadXray/">here</a></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}{% endblock javascripts %}
